@@ -3,7 +3,7 @@ import { join } from 'path';
 import { tmpdir } from 'os';  
 import AWS from 'aws-sdk';
 
-export async function downloadFromS3(fileKey: string) Promise<string> {
+export async function downloadFromS3(fileKey: string) {
 
   try {
 
