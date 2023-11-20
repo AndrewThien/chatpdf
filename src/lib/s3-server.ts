@@ -35,7 +35,7 @@ export async function downloadFromS3(file_key: string): Promise<string> {
         return;
       }
 
-      const file_name = join(tmpdir(), `${fileKey}-${Date.now()}.pdf`);
+      const file_name = join(tmpdir(), `${file_key}-${Date.now()}.pdf`);
 
       const file = fs.createWriteStream(file_name); // Create a write stream for the file
 
