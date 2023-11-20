@@ -40,7 +40,7 @@ export async function downloadFromS3(file_key: string): Promise<string | null> {
     
     const stream = doc.pipe(createWriteStream(file_name));
   
-    stream.write(Body);
+    stream.write(obj.Body);
     
     doc.end();
   
