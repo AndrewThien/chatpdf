@@ -1,35 +1,37 @@
+import { createWriteStream } from 'fs';
+import { join } from 'path';
+import { tmpdir } from 'os';  
 import AWS from 'aws-sdk';
-import fs from 'fs';
-import path from 'path';
 
-export async function downloadFromS3(file_key: string): Promise<string | null> {
+export async function downloadFromS3(fileKey) {
+
   try {
+
     AWS.config.update({
-      accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID!,
-      secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_ACCESS_KEY!,
+      accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID,
+      secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_ACCESS_KEY 
     });
 
     const s3 = new AWS.S3({
-      params: {
-        Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME!,
-      },
-      region: 'eu-west-2',
+      params: { Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME }, 
+      region: 'eu-west-2'
     });
 
-    const params = {
-      Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME!,
-      Key: file_key,
-    };
+    const obj = await s3.getObject({ Key: fileKey }).promise();
 
-    const obj = await s3.getObject(params).promise();
+    const fileName = join(tmpdir(), `${fileKey}-${Date.now()}.pdf`);
 
-    const file_name = `/temp/andrew-${Date.now().toString()}.pdf`;
+    const stream = createWriteStream(fileName);
 
-    fs.writeFileSync(file_name, obj.Body as Buffer);
+    stream.write(obj.Body); 
 
-    return file_name;
+    stream.end();
+
+    return fileName;
+
   } catch (error) {
-    console.error(error);
-    return null;
+   console.error(error);
+   return null;
   }
+
 }
