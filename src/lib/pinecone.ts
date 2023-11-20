@@ -1,10 +1,13 @@
 import { PineconeClient, Vector, utils as PineconeUtils } from "@pinecone-database/pinecone";
 import { downloadFromS3 } from "./s3-server";
 import {PDFLoader} from "langchain/document_loaders/fs/pdf"
+import { S3Loader } from "langchain/document_loaders/web/s3";
 import {Document, RecursiveCharacterTextSplitter} from '@pinecone-database/doc-splitter'
 import { getEmbeddings } from "./embeddings";
 import md5 from 'md5'
 import { convertToAscii } from "./utils";
+import { getS3Url } from "./s3";
+import path from "path";
 
 let pinecone: PineconeClient | null = null;
 
@@ -27,14 +30,23 @@ type PDFPage = {
 }
 
 export async function loadS3IntoPinecone(file_key: string) {
-    // 1. obtain the pdf - downlaod and read from pdf
+    // 1. obtain the pdf - download and read from pdf
     console.log("Downloading S3 into file system")
-    const file_name = await downloadFromS3(file_key);
+    console.log(file_key)
+    const loader = new S3Loader({
+        bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME!,
+        key: file_key,
+        s3Config: {
+            region: "eu-west-2",
+            credentials: {
+              accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID!,
+              secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_ACCESS_KEY!,
+          },
+        },
+        unstructuredAPIURL: "http://localhost:3000/api/create-chat",
+        unstructuredAPIKey: "", // this will be soon required
+      });
 
-    if(!file_name) {
-        throw new Error("Could not download from S3")
-    }
-    const loader = new PDFLoader(file_name);
     const pages = (await loader.load()) as PDFPage[];
 
     // 2. Split and segment the pdf
