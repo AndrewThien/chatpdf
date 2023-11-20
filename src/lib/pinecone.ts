@@ -8,6 +8,7 @@ import md5 from 'md5'
 import { convertToAscii } from "./utils";
 import { getS3Url } from "./s3";
 import path from "path";
+import { UnstructuredLoader } from "langchain/document_loaders/fs/unstructured";
 
 let pinecone: PineconeClient | null = null;
 
@@ -25,7 +26,7 @@ return pinecone;
 type PDFPage = {
     pageContent: string;
     metadata: {
-        loc: {pageNumber: number};
+        page_number: number;
     }
 }
 
@@ -43,12 +44,12 @@ export async function loadS3IntoPinecone(file_key: string) {
               secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_ACCESS_KEY!,
           },
         },
-        unstructuredAPIURL: "https://api.unstructured.io/general/v0/general",
-        unstructuredAPIKey: "", // this will be soon required
+        unstructuredAPIURL: process.env.UNSTRUCTURED_API_URL!,
+        unstructuredAPIKey: process.env.UNSTRUCTURED_API_KEY!,
       });
 
     const pages = (await loader.load()) as PDFPage[];
-
+    console.log(pages)
     // 2. Split and segment the pdf
     const documents = await Promise.all(pages.map(prepareDocument));
 
@@ -104,7 +105,7 @@ async function prepareDocument(page: PDFPage) {
         new Document({
             pageContent,
             metadata: {
-                pageNumber: metadata.loc.pageNumber,
+                pageNumber: metadata.page_number,
                 text: truncateStringByBytes(pageContent, 36000)
             }
         })
