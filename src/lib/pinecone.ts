@@ -43,7 +43,7 @@ export async function loadS3IntoPinecone(file_key: string) {
               secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_ACCESS_KEY!,
           },
         },
-        unstructuredAPIURL: "http://localhost:3000/api/create-chat",
+        unstructuredAPIURL: "https://api.unstructured.io/general/v0/general",
         unstructuredAPIKey: "", // this will be soon required
       });
 
