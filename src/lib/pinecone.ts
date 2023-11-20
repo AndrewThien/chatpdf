@@ -1,5 +1,4 @@
 import { PineconeClient, Vector, utils as PineconeUtils } from "@pinecone-database/pinecone";
-import { downloadFromS3 } from "./s3-server";
 import {PDFLoader} from "langchain/document_loaders/fs/pdf"
 import { S3Loader } from "langchain/document_loaders/web/s3";
 import {Document, RecursiveCharacterTextSplitter} from '@pinecone-database/doc-splitter'
