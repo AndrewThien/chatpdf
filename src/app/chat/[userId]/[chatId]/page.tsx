@@ -13,7 +13,7 @@ import React from "react";
 type Props = {
   params: {
     userID: number;
-    chatId: number;
+    chatId: string;
   };
 };
 
