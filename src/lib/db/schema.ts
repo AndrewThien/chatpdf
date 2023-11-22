@@ -6,6 +6,7 @@ export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   created_at: timestamp("created_at").notNull().defaultNow(),
   user_id: varchar("user_id", {length:256}).notNull(),
+  user_name: varchar("user_name", {length:256}),
 })
 
 export const chats = pgTable("chats", {

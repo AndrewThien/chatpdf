@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import Link from 'next/link'
 import { ArrowRight, LogIn } from "lucide-react";
 import FileUpload from "@/components/FileUpload";
@@ -13,6 +13,7 @@ import { eq } from "drizzle-orm";
 
 export default async function Home() {
   const {userId} = await auth()
+  const user = await currentUser();
   const isAuth = !!userId;
   const isPro = await checkSubscription();
   let firstChat;
@@ -27,6 +28,7 @@ export default async function Home() {
         .insert(users)
         .values({
           user_id: userId,
+          user_name: user?.firstName
         })
         .returning({
           insertedID: users.id,
@@ -52,7 +54,9 @@ export default async function Home() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center">
-            <h1 className="mr-3 text-5xl font-semibold">Chat with any Pdf</h1>
+            { isAuth ? (<h1 className="mr-3 text-4xl font-semibold">Hi {user?.firstName}, let's chat with any pdf</h1> ) :
+            (<h1 className="mr-3 text-5xl font-semibold">Chat with any Pdf</h1>)}
+            
             <UserButton afterSignOutUrl="/"></UserButton>
           </div>
 
