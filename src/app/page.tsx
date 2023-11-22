@@ -57,8 +57,8 @@ export default async function Home() {
           </div>
 
           <div className="flex mt-2">
-           {isAuth && hasPastChats &&
-           <Link href={`/chat/${active_user_id}/${firstChat.id}`}><Button>Go to chats <ArrowRight className="ml-2" /></Button></Link>  } 
+           {isAuth && hasPastChats && firstChat &&
+           <Link href={`/chat/${active_user_id}/${firstChat?.id}`}><Button>Go to chats <ArrowRight className="ml-2" /></Button></Link>  } 
             <div className="ml-3">
                   <SubscriptionButton isPro={isPro} />
             </div>
