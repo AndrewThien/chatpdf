@@ -50,12 +50,22 @@ export default async function Home() {
 
   return (
 
-    <div className="w-screen min-h-screen bg-gradient-to-r from-green-300 via-blue-500 to-purple-600">
+    <div className="w-screen min-h-screen bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 ">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center">
-            { isAuth ? (<h1 className="mr-3 text-4xl font-semibold">Hi {user?.firstName}, let&apos;s chat with any pdf</h1> ) :
-            (<h1 className="mr-3 text-5xl font-semibold">Chat with any Pdf</h1>)}
+          { isAuth ? (
+              <div>
+                <h1 className="mr-3 text-4xl font-semibold">Hi {user?.firstName}, let&apos;s get started</h1>
+              </div>
+            ) : (
+              <div>
+                <h1 className="mr-3 text-5xl font-semibold">Chat with any Pdf</h1>
+                <div className="max-w-xl mt-2 text-xl">
+                  <p>Join millions of students, researchers, and professionals to instantly understand PDFs</p>
+                </div>
+              </div>
+            )}
             
             <UserButton afterSignOutUrl="/"></UserButton>
           </div>
@@ -63,14 +73,10 @@ export default async function Home() {
           <div className="flex mt-2">
            {isAuth && hasPastChats && firstChat &&
            <Link href={`/chat/${active_user_id}/${firstChat?.id}`}><Button>Go to chats <ArrowRight className="ml-2" /></Button></Link>  } 
-            <div className="ml-3">
-                  <SubscriptionButton isPro={isPro} />
-            </div>
+            {isAuth && <div className="ml-3"><SubscriptionButton isPro={isPro} /></div>} 
           </div>
 
-          <div className="max-w-xl mt-1 text-lg text-slate-600">
-              <p>Join millions of students, researchers and professionals to instanly understand Pdfs</p>
-          </div>
+
 
           <div className="w-full mt-4">
             {isAuth ? (

@@ -3,7 +3,7 @@ import React from "react";
 import { Input } from "./ui/input";
 import { useChat } from "ai/react";
 import { Button } from "./ui/button";
-import { Send } from "lucide-react";
+import { Send, MessagesSquare } from "lucide-react";
 import MessageList from "./MessageList";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -30,24 +30,17 @@ const ChatComponent = ({ chatId }: Props) => {
     },
     initialMessages: data || [],
   });
-  React.useEffect(() => {
-    const messageContainer = document.getElementById("message-container");
-    if (messageContainer) {
-      messageContainer.scrollTo({
-        top: messageContainer.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-  }, [messages]);
+
 
   return (
     <div
-      className="relative max-h-screen overflow-scroll"
+      className="max-h-screen"
       id="message-container"
     >
       {/* header */}
-      <div className="sticky top-0 inset-x-0 p-2 bg-white h-fit">
-        <h3 className="text-xl font-bold">Chat</h3>
+      <div className="sticky flex items-center justify-center top-0 inset-x-0 p-2 bg-white h-fit">
+      <h3 className="font-bold text-2xl mr-2">Chat here </h3>
+      <MessagesSquare className="flex mt-2 ml-2" />
       </div>
 
       {/* message list */}

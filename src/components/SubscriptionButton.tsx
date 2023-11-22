@@ -2,6 +2,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import axios from "axios";
+import {Sparkles} from "lucide-react"
 
 type Props = { isPro: boolean };
 
@@ -18,9 +19,9 @@ const SubscriptionButton = (props: Props) => {
       setLoading(false);
     }
   };
-  return (
-    <Button disabled={loading} onClick={handleSubscription} variant="outline">
-      {props.isPro ? "Manage Subscriptions" : "Get Pro"}
+  return ( 
+    <Button className="ml-2" disabled={loading} onClick={handleSubscription} >
+      {props.isPro ? "Manage Subscriptions" : "Get Pro"} <Sparkles className="ml-2" />
     </Button>
   );
 };

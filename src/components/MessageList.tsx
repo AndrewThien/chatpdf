@@ -9,6 +9,7 @@ type Props = {
 };
 
 const MessageList = ({ messages, isLoading }: Props) => {
+  if (!messages) return <></>;
 
   if (isLoading) {
     return (
@@ -17,32 +18,29 @@ const MessageList = ({ messages, isLoading }: Props) => {
       </div>
     );
   }
-  
-  if (!messages) return <></>;
+
   return (
     <div className="flex flex-col gap-2 px-4">
-      {messages.map((message) => {
-        return (
+      {messages.map((message) => (
+        <div
+          key={message.id}
+          className={cn("flex", {
+            "justify-end pl-10": message.role === "user",
+            "justify-start pr-10": message.role === "assistant",
+          })}
+        >
           <div
-            key={message.id}
-            className={cn("flex", {
-              "justify-end pl-10": message.role === "user",
-              "justify-start pr-10": message.role === "assistant",
-            })}
+            className={cn(
+              "rounded-lg px-3 text-sm py-1 shadow-md ring-1 ring-gray-900/10",
+              {
+                "bg-blue-600 text-white": message.role === "user",
+              }
+            )}
           >
-            <div
-              className={cn(
-                "rounded-lg px-3 text-sm py-1 shadow-md ring-1 ring-gray-900/10",
-                {
-                  "bg-blue-600 text-white": message.role === "user",
-                }
-              )}
-            >
-              <p>{message.content}</p>
-            </div>
+            <p>{message.content}</p>
           </div>
-        );
-      })}
+        </div>
+      ))}
     </div>
   );
 };
