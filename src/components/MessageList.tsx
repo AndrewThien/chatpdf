@@ -20,7 +20,7 @@ const MessageList = ({ messages, isLoading }: Props) => {
   }
 
   return (
-    <div className="flex flex-col gap-2 px-4">
+    <div className="flex flex-col gap-2 px-4 mb-3 mt-3">
       {messages.map((message) => (
         <div
           key={message.id}
