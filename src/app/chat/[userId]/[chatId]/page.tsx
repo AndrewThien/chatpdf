@@ -13,11 +13,14 @@ import React from "react";
 type Props = {
   params: {
     userID: number;
-    chatId: string;
+    chatId: number;
   };
 };
 
 const ChatPage = async ({ params: { userID, chatId } }: Props) => {
+
+  const chatIdNumber = typeof chatId === 'string' ? parseInt(chatId, 10) : chatId;
+  
   const { userId } = await auth();
   if (!userId) {
     return redirect("/sign-in");
@@ -29,11 +32,11 @@ const ChatPage = async ({ params: { userID, chatId } }: Props) => {
   if (!_chats) {
     return redirect("/");
   }
-  if (!_chats.find((chat) => chat.id === parseInt(chatId))) {
+  if (!_chats.find((chat) => chat.id === parseInt(chatIdNumber))) {
     return redirect("/");
   }
 
-  const currentChat = _chats.find((chat) => chat.id === parseInt(chatId));
+  const currentChat = _chats.find((chat) => chat.id === parseInt(chatIdNumber));
   const isPro = await checkSubscription();
 
   return (
@@ -41,7 +44,7 @@ const ChatPage = async ({ params: { userID, chatId } }: Props) => {
       <div className="flex w-full max-h-screen overflow-scroll">
         {/* chat sidebar */}
         <div className="flex-[1] max-w-xs">
-          <ChatSideBar chats={_chats} userId={parseInt(active_user_id)} chatId={parseInt(chatId)} isPro= {isPro} />
+          <ChatSideBar chats={_chats} userId={parseInt(active_user_id)} chatId={parseInt(chatIdNumber)} isPro= {isPro} />
         </div>
         {/* pdf viewer */}
         <div className="max-h-screen p-4 oveflow-scroll flex-[5]">
@@ -49,7 +52,7 @@ const ChatPage = async ({ params: { userID, chatId } }: Props) => {
         </div>
         {/* chat component */}
         <div className="flex-[3] border-l-4 border-l-slate-200">
-          <ChatComponent chatId={parseInt(chatId)} />
+          <ChatComponent chatId={parseInt(chatIdNumber)} />
           </div>
       </div>
     </div>
