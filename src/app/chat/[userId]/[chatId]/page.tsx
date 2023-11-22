@@ -3,7 +3,7 @@ import ChatSideBar from "@/components/ChatSideBar";
 import PDFViewer from "@/components/PDFViewer";
 
 import { db } from "@/lib/db";
-import { chats } from "@/lib/db/schema";
+import { chats, users } from "@/lib/db/schema";
 import { checkSubscription } from "@/lib/subscription";
 import { auth } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";
@@ -12,16 +12,20 @@ import React from "react";
 
 type Props = {
   params: {
-    chatId: string;
+    userID: number;
+    chatId: number;
   };
 };
 
-const ChatPage = async ({ params: { chatId } }: Props) => {
+const ChatPage = async ({ params: { userID, chatId } }: Props) => {
   const { userId } = await auth();
   if (!userId) {
     return redirect("/sign-in");
   }
-  const _chats = await db.select().from(chats).where(eq(chats.user_id, userId));
+  const existingUser = await db.select().from(users).where(eq(users.user_id, userId));
+  const active_user_id = existingUser[0].id;
+
+  const _chats = await db.select().from(chats).where(eq(chats.user_id, active_user_id));
   if (!_chats) {
     return redirect("/");
   }
@@ -37,7 +41,7 @@ const ChatPage = async ({ params: { chatId } }: Props) => {
       <div className="flex w-full max-h-screen overflow-scroll">
         {/* chat sidebar */}
         <div className="flex-[1] max-w-xs">
-          <ChatSideBar chats={_chats} chatId={parseInt(chatId)} isPro= {isPro} />
+          <ChatSideBar chats={_chats} userId={parseInt(active_user_id)} chatId={parseInt(chatId)} isPro= {isPro} />
         </div>
         {/* pdf viewer */}
         <div className="max-h-screen p-4 oveflow-scroll flex-[5]">

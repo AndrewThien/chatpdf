@@ -2,12 +2,18 @@ import {integer, pgEnum, pgTable, serial, text, timestamp, varchar} from "drizzl
 
 export const userSystemEnum = pgEnum("user_system_enum", ["system", "user"])
 
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  created_at: timestamp("created_at").notNull().defaultNow(),
+  user_id: varchar("user_id", {length:256}).notNull(),
+})
+
 export const chats = pgTable("chats", {
     id: serial("id").primaryKey(),
+    user_id: integer("user_id").references(()=>users.id).notNull(),
     pdf_name: text("pdf_name").notNull(),
     pdf_url: text("pdf_url").notNull(),
     created_at: timestamp("created_at").notNull().defaultNow(),
-    user_id: varchar("user_id", {length:256}).notNull(),
     file_key: text("file_key").notNull(),
 })
 

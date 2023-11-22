@@ -43,9 +43,9 @@ const FileUpload = () => {
                 }
             
             mutate(data, {
-                onSuccess: ({chat_id}) => { 
+                onSuccess: ({user_id, chat_id}) => { 
                     toast.success("chat created!");
-                    router.push(`/chat/${chat_id}`);
+                    router.push(`/chat/${user_id}/${chat_id}`);
                 },
                 onError: (err) => {
                     toast.error("Error creating chats");
@@ -71,7 +71,7 @@ const FileUpload = () => {
                 <input {...getInputProps()}/>
                 {uploading || isLoading ? (
                     <>
-                    {/*loaing state*/}
+                    {/*loading state*/}
                     <Loader2 className="h-10 w-10 text-blue-500 animate-spin"/>
                     <p className="mt-2 text-sm text-slate-400">
                         Spilling Tea to GPT ...

@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export const runtime = "edge";
-
+// need changes here
 export const POST = async (req: Request) => {
   const { chatId } = await req.json();
 

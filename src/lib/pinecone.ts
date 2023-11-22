@@ -1,13 +1,11 @@
 import { PineconeClient, Vector, utils as PineconeUtils } from "@pinecone-database/pinecone";
-import {PDFLoader} from "langchain/document_loaders/fs/pdf"
 import { S3Loader } from "langchain/document_loaders/web/s3";
 import {Document, RecursiveCharacterTextSplitter} from '@pinecone-database/doc-splitter'
 import { getEmbeddings } from "./embeddings";
 import md5 from 'md5'
 import { convertToAscii } from "./utils";
-import { getS3Url } from "./s3";
-import path from "path";
-import { UnstructuredLoader } from "langchain/document_loaders/fs/unstructured";
+
+
 
 let pinecone: PineconeClient | null = null;
 
@@ -32,7 +30,7 @@ type PDFPage = {
 export async function loadS3IntoPinecone(file_key: string) {
     // 1. obtain the pdf - download and read from pdf
     console.log("Downloading S3 into file system")
-    console.log(file_key)
+
     const loader = new S3Loader({
         bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME!,
         key: file_key,
@@ -48,7 +46,7 @@ export async function loadS3IntoPinecone(file_key: string) {
       });
 
     const pages = (await loader.load()) as PDFPage[];
-    console.log(pages)
+
     // 2. Split and segment the pdf
     const documents = await Promise.all(pages.map(prepareDocument));
 
