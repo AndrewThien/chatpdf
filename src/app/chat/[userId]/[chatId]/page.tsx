@@ -12,15 +12,15 @@ import React from "react";
 
 type Props = {
   params: {
-    userID: number;
-    chatId: number;
+    userID: string;
+    chatId: string;
   };
 };
 
 const ChatPage = async ({ params: { userID, chatId } }: Props) => {
 
   const chatIdNumber = typeof chatId === 'string' ? parseInt(chatId, 10) : chatId;
-  
+  console.log(typeof chatIdNumber)
   const { userId } = await auth();
   if (!userId) {
     return redirect("/sign-in");
@@ -32,9 +32,10 @@ const ChatPage = async ({ params: { userID, chatId } }: Props) => {
   if (!_chats) {
     return redirect("/");
   }
-  if (!_chats.find((chat) => chat.id === parseInt(chatIdNumber))) {
+  if (!_chats.find((chat) => chat.id === chatIdNumber)) {
     return redirect("/");
   }
+
 
   const currentChat = _chats.find((chat) => chat.id === parseInt(chatIdNumber));
   const isPro = await checkSubscription();
