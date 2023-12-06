@@ -1,7 +1,10 @@
 # ChatPDF
 
 ChatPDF is a web app that can understand and answer questions about an uploaded PDF document. It serves as an assistant to help researchers, students, or professionals quickly find precise information from PDFs.
+
+
 ![1](screenshot/1.png "1")
+
 
 ## Installation <a name="installation"/>
 
