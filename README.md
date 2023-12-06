@@ -81,5 +81,6 @@ Huge thanks to:
 - Anthropic
 - LangChain
 - Pinecone
+- OpenAI
 
 [Tri Thien Nguyen](https://www.linkedin.com/in/tri-thien-nguyen/)
