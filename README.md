@@ -74,9 +74,9 @@ ChatPDF was inspired by Elliott Chong's YouTube Tutorial. It builds on his open-
 
 Huge thanks to:
 
-[Elliot Chong](https://github.com/Elliott-Chong/chatpdf-yt)
-Anthropic
-LangChain
-Pinecone
+- [Elliot Chong](https://github.com/Elliott-Chong/chatpdf-yt)
+- Anthropic
+- LangChain
+- Pinecone
 
 [Tri Thien Nguyen](https://www.linkedin.com/in/tri-thien-nguyen/)
