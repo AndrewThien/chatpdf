@@ -31,8 +31,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Built using Next.js, React, TypeScript, and other modern technologies
 - Hosted on Vercel for fast, global access with minimal latency
 - Leverages AWS S3, LangChain, Pinecone, and ChatGPT to understand documents and generate answers
-- Improved UI/UX compared to original, plus user account management
-- Share customized dashboard links to manage conversations
+- Improved UI/UX and logic flow to prevent Open Error on temp folder compared to original, plus user account management by adding ‘users’ table and making chat link ‘/chat/{userID}/{chatID}’ (instead of ‘/chat/{chatID}’)
+
 
 ## Demo
 A live demo is available here:
